@@ -278,6 +278,46 @@
 			"response": []
 		},
 		{
+			"name": "ASK List Assignments [T] Jenkins",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"var MyAssignment = pm.environment.get(\"AssignmentId\");",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"Verify assignment was created\", function () {",
+							"    pm.expect(jsonData[jsonData.length-1].id).to.eql(MyAssignment);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{TeacherToken}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{BaseURL}}/assignments"
+			},
+			"response": []
+		},
+		{
 			"name": "ASK Assignment Update [T] Jenkins",
 			"event": [
 				{
@@ -323,46 +363,6 @@
 					}
 				},
 				"url": "{{BaseURL}}/assignment/{{AssignmentId}}"
-			},
-			"response": []
-		},
-		{
-			"name": "ASK List Assignments [T] Jenkins",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Response time is less than 1000ms\", function () {",
-							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
-							"});",
-							"",
-							"var MyAssignment = pm.environment.get(\"AssignmentId\");",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"Verify assignment was created\", function () {",
-							"    pm.expect(jsonData[jsonData.length-1].id).to.eql(MyAssignment);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": {
-						"token": "{{TeacherToken}}"
-					}
-				},
-				"method": "GET",
-				"header": [],
-				"url": "{{BaseURL}}/assignments"
 			},
 			"response": []
 		},
